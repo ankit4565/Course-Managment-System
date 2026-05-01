@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(uuid())
+  name        String
+  email       String       @unique
+  password    String
+  role        Role         @default(USER)
+
+  isEmailVerified Boolean   @default(false)
+
+  emailVerificationOtp        String?
+  emailVerificationOtpExpiry   DateTime?
+
+  passwordResetOtp             String?
+  passwordResetOtpExpiry       DateTime?
+
+  resetToken  String?
+  resetTokenExpiry DateTime?
+
+  courses     Course[]
+  enrollments Enrollment[]
+
+  createdAt   DateTime @default(now())
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  price       Float
+
+  createdBy   String
+  user        User @relation(fields: [createdBy], references: [id])
+
+  enrollments Enrollment[]
+
+  createdAt   DateTime @default(now())
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+
+  userId     String
+  courseId   String
+
+  user       User   @relation(fields: [userId], references: [id])
+  course     Course @relation(fields: [courseId], references: [id])
+
+  enrolledAt DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  USER
+}
