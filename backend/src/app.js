@@ -12,10 +12,10 @@ const swaggerSpec = require("./config/swagger");
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://course-managment-system.vercel.app",
-];
+// const allowedOrigins = [
+//   "http://localhost:5173",
+//   "https://course-managment-system.vercel.app",
+// ];
 
 // app.use(
 //   cors({
@@ -43,6 +43,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(express.json());
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/protected", authMiddleware);
