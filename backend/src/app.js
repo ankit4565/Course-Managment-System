@@ -17,25 +17,32 @@ const allowedOrigins = [
   "https://course-managment-system.vercel.app",
 ];
 
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+
+//       // allow requests with no origin
+//       if (!origin) return callback(null, true);
+
+//       if (allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+
+//     credentials: true,
+//   })
+// );
+
+// app.use(express.json());
+
 app.use(
   cors({
-    origin: function (origin, callback) {
-
-      // allow requests with no origin
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-
+    origin: true,
     credentials: true,
   })
 );
-
-app.use(express.json());
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/protected", authMiddleware);
